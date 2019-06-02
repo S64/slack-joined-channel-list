@@ -108,7 +108,9 @@ const App: React.FC = () => {
           <table>
             <tbody>
               <tr>
-                <th>Token</th>
+                <th>
+                  <a href="https://api.slack.com/custom-integrations/legacy-tokens">Token</a>
+                </th>
                 <td>
                 <input
                   type="text"
