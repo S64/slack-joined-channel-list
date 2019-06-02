@@ -1,0 +1,42 @@
+{
+  "name": "slack-joined-channel-list",
+  "version": "0.1.0",
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "dependencies": {
+    "@types/jest": "24.0.13",
+    "@types/node": "12.0.4",
+    "@types/react": "16.8.19",
+    "@types/react-dom": "16.8.4",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-scripts": "3.0.1",
+    "slack": "^11.0.2",
+    "typescript": "3.5.1"
+  },
+  "devDependencies": {
+    "fixpack": "^2.3.1",
+    "netlify-cli": "^2.11.19"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "private": true,
+  "scripts": {
+    "build": "react-scripts build",
+    "eject": "react-scripts eject",
+    "fixpack": "fixpack",
+    "start": "react-scripts start",
+    "test": "react-scripts test"
+  }
+}
