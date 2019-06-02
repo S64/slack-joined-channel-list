@@ -3,27 +3,27 @@ import GitHubButton from 'react-github-btn'
 import Slack from 'slack';
 import './App.css';
 
-type HogeState = {
+type BaseState = {
   loading: boolean
   error: boolean,
   data?: any
 }
 
-const initialHogeState: HogeState = {
+const initialBaseState: BaseState = {
   loading: false,
   error: false,
   data: null
 }
 
-type HogeAction = {
+type BaseAction = {
   type: 'init' | 'start' | 'data' | 'error',
   data?: string[]
 }
 
-const hogeReducer = (state: HogeState, action: HogeAction) => {
+const baseReducer = (state: BaseState, action: BaseAction) => {
   switch (action.type) {
     case 'init':
-      return initialHogeState
+      return initialBaseState
     case 'start':
       return {...state, loading: true}
     case 'data':
@@ -35,17 +35,21 @@ const hogeReducer = (state: HogeState, action: HogeAction) => {
   }
 }
 
-type HogeRequest = {
+type UsersRequest = {
   token: string,
   userId: string,
 }
 
-const useHoge = (req: HogeRequest | null) => {
-  const [state, dispatch] = useReducer(hogeReducer, initialHogeState)
+const usersReducer = baseReducer
+const initialUsersState = initialBaseState
+type UsersAction = BaseAction
+
+const useHoge = (req: UsersRequest | null) => {
+  const [state, dispatch] = useReducer(usersReducer, initialUsersState)
 
   useEffect(
     () => {
-      let dispatchSafe = (action: HogeAction) => { dispatch(action) }
+      let dispatchSafe = (action: UsersAction) => { dispatch(action) }
 
       (async () => {
         if (!req || !req.token) return;
@@ -74,7 +78,7 @@ const useHoge = (req: HogeRequest | null) => {
       })()
 
       return () => { // cleanup
-        dispatchSafe = (_: HogeAction) => { /* no-op */ }
+        dispatchSafe = (_: UsersAction) => { /* no-op */ }
         dispatch({ type: 'init' })
       }
     },
@@ -87,7 +91,7 @@ const useHoge = (req: HogeRequest | null) => {
 const App: React.FC = () => {
   const [token, setToken] = React.useState('')
   const [userId, setUserId] = React.useState('')
-  const [req, setReq] = React.useState<HogeRequest | null>(null)
+  const [req, setReq] = React.useState<UsersRequest | null>(null)
 
   const hogeState = useHoge(req)
 
