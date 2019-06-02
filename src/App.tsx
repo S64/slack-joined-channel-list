@@ -105,29 +105,40 @@ const App: React.FC = () => {
       </header>
       <div className="App-body">
         <form onSubmit={ e => e.preventDefault() }>
-          <label>
-            <span>Token</span>
-            <input
-              type="text"
-              name="token"
-              value={ token }
-              onChange={ e => setToken(e.target.value) }
-              disabled={ hogeState.loading }
-              />
-          </label>
-          <label>
-            <span>UserID</span>
-            <input
-            type="text"
-            name="userId"
-            value={ userId }
-            onChange={ e => setUserId(e.target.value) }
-            disabled={ !token || hogeState.loading }
-            />
-          </label>
-          <button
-            disabled={ !token || !userId || hogeState.loading }
-            onClick={ e => setReq({ token: token, userId: userId }) }>Submit</button>
+          <table>
+            <tbody>
+              <tr>
+                <th>Token</th>
+                <td>
+                <input
+                  type="text"
+                  name="token"
+                  value={ token }
+                  onChange={ e => setToken(e.target.value) }
+                  disabled={ hogeState.loading }/>
+                </td>
+              </tr>
+              <tr>
+                <th>UesrId</th>
+                <td>
+                <input
+                  type="text"
+                  name="userId"
+                  value={ userId }
+                  onChange={ e => setUserId(e.target.value) }
+                  disabled={ !token || hogeState.loading }
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td colSpan={2}>
+                <button
+                  disabled={ !token || !userId || hogeState.loading }
+                  onClick={ e => setReq({ token: token, userId: userId }) }>Submit</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </form>
         {(() => {
           return hogeState.loading ? <div>Loading...</div> : <ul>
