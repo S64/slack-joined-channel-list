@@ -1,4 +1,5 @@
 import React, { useEffect, useReducer } from 'react';
+import GitHubButton from 'react-github-btn'
 import Slack from 'slack';
 import './App.css';
 
@@ -93,7 +94,14 @@ const App: React.FC = () => {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>slack-joined-channel-list</h1>
+        <h1>
+          <span>slack-joined-channel-list</span>
+          <GitHubButton
+            href="https://github.com/S64/slack-joined-channel-list"
+            data-size="large"
+            data-show-count="true"
+            aria-label="Star S64/slack-joined-channel-list on GitHub">Star</GitHubButton>
+        </h1>
       </header>
       <div className="App-body">
         <form onSubmit={ e => e.preventDefault() }>
@@ -131,12 +139,6 @@ const App: React.FC = () => {
           </ul>
         })()}
       </div>
-      <a href="https://github.com/S64/slack-joined-channel-list">
-        <img
-          className="App-gh-ribbon"
-          src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"
-          alt="Fork me on GitHub"/>
-      </a>
     </div>
   );
 }
