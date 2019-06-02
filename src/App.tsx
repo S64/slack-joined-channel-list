@@ -131,6 +131,12 @@ const App: React.FC = () => {
           </ul>
         })()}
       </div>
+      <a href="https://github.com/S64/slack-joined-channel-list">
+        <img
+          className="App-gh-ribbon"
+          src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"
+          alt="Fork me on GitHub"/>
+      </a>
     </div>
   );
 }
