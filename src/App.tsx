@@ -88,11 +88,62 @@ const useChannels = (req: ChannelsRequest | null) => {
   return state
 }
 
+type UsersRequest = {
+  token: string
+}
+
+const usersReducer = baseReducer
+const initialUsersState = initialBaseState
+type UsersAction = BaseAction
+
+const useUsers = (req: UsersRequest | null) => {
+  const [state, dispatch] = useReducer(usersReducer, initialUsersState)
+
+  useEffect(
+    () => {
+      let dispatchSafe = (action: UsersAction) => { dispatch(action) }
+
+      (async () => {
+        if (!req || !req.token) return;
+
+        dispatchSafe({ type: 'start' })
+
+        try {
+          const res = await Slack.users.list({ token: req.token })
+          if (res.ok) {
+            dispatchSafe({
+              type: 'data',
+              data: (() => {
+                return res['members']
+              })()
+            })
+          } else {
+            throw new Error('TODO')
+          }
+        } catch (e) {
+          dispatchSafe({ type: 'error' })
+        }
+
+      })()
+
+      return () => { // cleanup
+        dispatchSafe = (_: UsersAction) => { /* no-op */ }
+        dispatch({ type: 'init' })
+      }
+    },
+    [ req ]
+  )
+
+  return state
+}
+
 const App: React.FC = () => {
   const [token, setToken] = React.useState('')
   const [userId, setUserId] = React.useState('')
+  const [usersReq, setUsersReq] = React.useState<UsersRequest | null>(null)
   const [req, setReq] = React.useState<ChannelsRequest | null>(null)
 
+  const usersState = useUsers(usersReq)
   const channelsState = useChannels(req)
 
   return (
@@ -128,16 +179,24 @@ const App: React.FC = () => {
                 <th>
                   <span>UesrId</span>
                   <button
-                    disabled={ !token || channelsState.loading }>🔄</button>
+                    disabled={ !token || channelsState.loading }
+                    onClick={ e => setUsersReq({ token: token }) }
+                    >🔄</button>
                 </th>
                 <td>
-                <input
-                  type="text"
-                  name="userId"
-                  value={ userId }
-                  onChange={ e => setUserId(e.target.value) }
-                  disabled={ !token || channelsState.loading }
-                  />
+                  <select
+                    name="userId"
+                    disabled={ !token || channelsState.loading }
+                    onChange={ e => setUserId(e.target.value) }>
+                      {(() => {
+                        return (usersState.data || []).map((user: any) => {
+                          return <option
+                            value={user['id']}
+                            selected={ user['id'] == userId }
+                            >{ '`'+user['profile']['display_name']+'`: '+user['real_name']+' ('+user['id']+')' }</option>
+                        })
+                      })()}
+                  </select>
                 </td>
               </tr>
               <tr>
