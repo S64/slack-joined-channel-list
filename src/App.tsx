@@ -121,7 +121,11 @@ const App: React.FC = () => {
                 </td>
               </tr>
               <tr>
-                <th>UesrId</th>
+                <th>
+                  <span>UesrId</span>
+                  <button
+                    disabled={ !token || hogeState.loading }>🔄</button>
+                </th>
                 <td>
                 <input
                   type="text"
