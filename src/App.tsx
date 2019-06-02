@@ -35,21 +35,21 @@ const baseReducer = (state: BaseState, action: BaseAction) => {
   }
 }
 
-type UsersRequest = {
+type ChannelsRequest = {
   token: string,
   userId: string,
 }
 
-const usersReducer = baseReducer
-const initialUsersState = initialBaseState
-type UsersAction = BaseAction
+const channelsReducer = baseReducer
+const initialChannelsState = initialBaseState
+type ChannelsAction = BaseAction
 
-const useHoge = (req: UsersRequest | null) => {
-  const [state, dispatch] = useReducer(usersReducer, initialUsersState)
+const useChannels = (req: ChannelsRequest | null) => {
+  const [state, dispatch] = useReducer(channelsReducer, initialChannelsState)
 
   useEffect(
     () => {
-      let dispatchSafe = (action: UsersAction) => { dispatch(action) }
+      let dispatchSafe = (action: ChannelsAction) => { dispatch(action) }
 
       (async () => {
         if (!req || !req.token) return;
@@ -78,7 +78,7 @@ const useHoge = (req: UsersRequest | null) => {
       })()
 
       return () => { // cleanup
-        dispatchSafe = (_: UsersAction) => { /* no-op */ }
+        dispatchSafe = (_: ChannelsAction) => { /* no-op */ }
         dispatch({ type: 'init' })
       }
     },
@@ -91,9 +91,9 @@ const useHoge = (req: UsersRequest | null) => {
 const App: React.FC = () => {
   const [token, setToken] = React.useState('')
   const [userId, setUserId] = React.useState('')
-  const [req, setReq] = React.useState<UsersRequest | null>(null)
+  const [req, setReq] = React.useState<ChannelsRequest | null>(null)
 
-  const hogeState = useHoge(req)
+  const channelsState = useChannels(req)
 
   return (
     <div className="App">
@@ -121,14 +121,14 @@ const App: React.FC = () => {
                   name="token"
                   value={ token }
                   onChange={ e => setToken(e.target.value) }
-                  disabled={ hogeState.loading }/>
+                  disabled={ channelsState.loading }/>
                 </td>
               </tr>
               <tr>
                 <th>
                   <span>UesrId</span>
                   <button
-                    disabled={ !token || hogeState.loading }>🔄</button>
+                    disabled={ !token || channelsState.loading }>🔄</button>
                 </th>
                 <td>
                 <input
@@ -136,14 +136,14 @@ const App: React.FC = () => {
                   name="userId"
                   value={ userId }
                   onChange={ e => setUserId(e.target.value) }
-                  disabled={ !token || hogeState.loading }
+                  disabled={ !token || channelsState.loading }
                   />
                 </td>
               </tr>
               <tr>
                 <td colSpan={2}>
                 <button
-                  disabled={ !token || !userId || hogeState.loading }
+                  disabled={ !token || !userId || channelsState.loading }
                   onClick={ e => setReq({ token: token, userId: userId }) }>Submit</button>
                 </td>
               </tr>
@@ -151,9 +151,9 @@ const App: React.FC = () => {
           </table>
         </form>
         {(() => {
-          return hogeState.loading ? <div>Loading...</div> : <ul>
+          return channelsState.loading ? <div>Loading...</div> : <ul>
             {
-              (hogeState.data || []).map((channelName: string) => {
+              (channelsState.data || []).map((channelName: string) => {
                 return <li>{channelName}</li>
               })
             }
