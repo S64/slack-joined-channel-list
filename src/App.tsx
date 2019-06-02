@@ -172,21 +172,21 @@ const App: React.FC = () => {
                   name="token"
                   value={ token }
                   onChange={ e => setToken(e.target.value) }
-                  disabled={ channelsState.loading }/>
+                  disabled={ usersState.loading || channelsState.loading }/>
                 </td>
               </tr>
               <tr>
                 <th>
                   <span>UesrId</span>
                   <button
-                    disabled={ !token || channelsState.loading }
+                    disabled={ !token || usersState.loading || channelsState.loading }
                     onClick={ e => setUsersReq({ token: token }) }
                     >🔄</button>
                 </th>
                 <td>
                   <select
                     name="userId"
-                    disabled={ !token || channelsState.loading }
+                    disabled={ !token || !usersState.data || usersState.loading || channelsState.loading }
                     onChange={ e => setUserId(e.target.value) }>
                       {(() => {
                         return (usersState.data || []).map((user: any) => {
@@ -202,7 +202,7 @@ const App: React.FC = () => {
               <tr>
                 <td colSpan={2}>
                 <button
-                  disabled={ !token || !userId || channelsState.loading }
+                  disabled={ !token || !userId || usersState.loading || channelsState.loading }
                   onClick={ e => setReq({ token: token, userId: userId }) }>Submit</button>
                 </td>
               </tr>
